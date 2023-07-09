@@ -10,7 +10,7 @@ type usePageNavigationProps = {
 };
 
 export default function usePageNavigation({
-  pageSize = 10,
+  pageSize = 5,
 }: usePageNavigationProps) {
   const [pageState, setPageState] = useState<PageNavigationState>({
     pageIndex: 0,

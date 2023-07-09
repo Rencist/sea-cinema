@@ -88,14 +88,14 @@ export const GENRE = [
 export const SORT = [
   {
     id: 1,
-    value: 'total_pembaca',
+    value: 'title',
   },
   {
     id: 2,
-    value: 'judul',
+    value: 'ticket_price',
   },
   {
     id: 3,
-    value: 'skor',
+    value: 'age_rating',
   },
 ];

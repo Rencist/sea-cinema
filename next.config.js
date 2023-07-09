@@ -8,9 +8,9 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.myanimelist.net',
+        hostname: 'image.tmdb.org',
         port: '',
-        pathname: '/images/manga/*/*',
+        pathname: '/t/p/w500/*',
       },
     ],
   },

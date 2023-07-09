@@ -9,7 +9,7 @@ import withAuth from '@/components/hoc/withAuth';
 import PageNavigation from '@/components/PageNavigation';
 import SEO from '@/components/SEO';
 import Typography from '@/components/typography/Typography';
-import { GENRE, SORT } from '@/constant/manga';
+import { SORT } from '@/constant/manga';
 import usePageNavigation from '@/hooks/usePageNavigation';
 import Layout from '@/layouts/Layout';
 import MangaCard from '@/pages/dashboard/components/MangaCard';
@@ -27,20 +27,16 @@ export default withAuth(DashboardPage, ['all']);
 function DashboardPage() {
   const methods = useForm<DashboardFilter>();
   const { handleSubmit } = methods;
-  const { pageState, setPageState } = usePageNavigation({ pageSize: 60 });
+  const { pageState, setPageState } = usePageNavigation({ pageSize: 9 });
   const [filters, setFilters] = useState<DashboardFilter | undefined>(
     undefined
   );
 
-  const url = `seri?page=${pageState.pageIndex + 1}&per_page=${
+  const url = `movie?page=${pageState.pageIndex + 1}&per_page=${
     pageState.pageSize
   }${filters?.search ? `&search=${filters?.search}` : ''}${
-    filters?.genre
-      ? filters.genre
-          .map((item, index) => `&filter[0][${index}]=${item.id}`)
-          .join('')
-      : ''
-  }${filters?.sort[0] ? `&sort=${filters?.sort[0].value}` : ''}`;
+    filters?.sort[0] ? `&sort=${filters?.sort[0].value}` : ''
+  }`;
 
   const { data: queryData } = useQuery<PaginatedApiResponse<Seri[]>>([url], {
     keepPreviousData: true,
@@ -64,13 +60,6 @@ function DashboardPage() {
                 <Input id='search' placeholder='Search' leftIcon={BiSearch} />
                 <div className='flex flex-row gap-3 lg:col-start-3'>
                   <Filter
-                    id='genre'
-                    placeholder='Genre'
-                    filters={GENRE}
-                    multiple
-                    onChange={handleSubmit(onChange)}
-                  />
-                  <Filter
                     id='sort'
                     placeholder='Sort By'
                     defaultValue={[SORT[0]]}
@@ -88,15 +77,12 @@ function DashboardPage() {
                   <MangaCard
                     key={seri.id}
                     id={seri.id}
-                    name={seri.judul}
-                    author={seri.penulis[0]}
-                    score={seri.skor}
-                    imageSrc={seri.foto}
-                    readers={seri.total_pembaca}
-                    volumes={seri.manga.length.toString()}
-                    year={seri.tahun_terbit.split('/')[2]}
-                    synopsis={seri.sinopsis}
-                    genre={seri.genre}
+                    title={seri.title}
+                    description={seri.description}
+                    release_date={seri.release_date}
+                    poster_url={seri.poster_url}
+                    age_rating={seri.age_rating}
+                    ticket_price={seri.ticket_price}
                   />
                 ))}
               </div>

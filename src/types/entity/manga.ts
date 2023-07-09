@@ -20,18 +20,12 @@ export type Genre = {
 
 export type Seri = {
   id: number;
-  judul: string;
-  sinopsis: string;
-  tahun_terbit: string;
-  skor: number;
-  total_penilai: number;
-  total_pembaca: number;
-  foto: string;
-  penerbit_id: number;
-  nama_penerbit: string;
-  manga: Manga[];
-  penulis: Penulis[];
-  genre?: Genre[];
+  title: string;
+  description: string;
+  release_date: string;
+  poster_url: string;
+  age_rating: string;
+  ticket_price: number;
 };
 
 export type Comment = {

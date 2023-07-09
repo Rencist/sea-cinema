@@ -3,39 +3,30 @@ import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import { AiFillStar } from 'react-icons/ai';
 import { BsFillPersonFill } from 'react-icons/bs';
-import { numericFormatter } from 'react-number-format';
 import { useDraggable } from 'react-use-draggable-scroll';
 
 import Typography from '@/components/typography/Typography';
-import { Genre, Penulis } from '@/types/entity/manga';
 
 type MangaCardProps = {
   id: number;
-  name: string;
-  author: Penulis;
-  score: number;
-  readers: number;
-  imageSrc: string;
-  volumes: string;
-  year: string;
-  synopsis: string;
-  genre?: Genre[];
+  title: string;
+  description: string;
+  release_date: string;
+  poster_url: string;
+  age_rating: string;
+  ticket_price: number;
 };
 
 export default function MangaCard({
   id,
-  name,
-  author,
-  score,
-  readers,
-  imageSrc,
-  volumes,
-  year,
-  synopsis,
-  genre,
+  title,
+  description,
+  release_date,
+  poster_url,
+  age_rating,
+  ticket_price,
 }: MangaCardProps) {
-  const [src, setSrc] = useState(imageSrc);
-
+  const [src, setSrc] = useState(poster_url);
   const router = useRouter();
 
   const ref =
@@ -64,25 +55,17 @@ export default function MangaCard({
         <div className='absolute w-full space-y-1 px-3 py-1.5 bottom-0 bg-teal-900 opacity-90'>
           <div className='-space-y-1 text-base-surface hover:text-teal-200'>
             <Typography variant='p' weight='bold'>
-              {name}
-            </Typography>
-            <Typography variant='c'>
-              {author.nama_belakang +
-                (author.nama_depan && `, ${author.nama_depan}`)}
+              {title}
             </Typography>
           </div>
           <div className='flex flex-row gap-3 text-base-surface'>
             <div className='flex flex-row items-center gap-1'>
-              <AiFillStar className='text-sm' />
-              <Typography variant='c'>{score}</Typography>
+              <BsFillPersonFill className='text-sm' />
+              <Typography variant='c'>{age_rating}</Typography>
             </div>
             <div className='flex flex-row items-center gap-1'>
-              <BsFillPersonFill className='text-sm' />
-              <Typography variant='c'>
-                {numericFormatter(readers.toString(), {
-                  thousandSeparator: '.',
-                })}
-              </Typography>
+              <AiFillStar className='text-sm' />
+              <Typography variant='c'>{release_date}</Typography>
             </div>
           </div>
         </div>
@@ -90,15 +73,8 @@ export default function MangaCard({
 
       <div className='relative flex flex-1 flex-col text-teal-600'>
         <div className='flex-1 space-y-1.5 p-3 overflow-y-hidden hover:overflow-y-auto'>
-          <Typography
-            variant='c'
-            weight='bold'
-            className='flex flex-row gap-1.5'
-          >
-            {volumes} vol • {year}
-          </Typography>
           <Typography variant='c' className='leading-5'>
-            {synopsis}
+            {description}
           </Typography>
         </div>
         <div className='h-12 w-full' />
@@ -108,35 +84,11 @@ export default function MangaCard({
           {...events}
           ref={ref}
         >
-          {genre ? (
-            genre
-              .map(({ nama }) => nama)
-              .filter((value, index, arr) => arr.indexOf(value) === index)
-              .map((genreName) => (
-                <div
-                  key={genreName}
-                  className='bg-teal-600 px-3 rounded-3xl whitespace-nowrap'
-                >
-                  <Typography
-                    variant='c'
-                    weight='bold'
-                    className='text-base-surface'
-                  >
-                    {genreName}
-                  </Typography>
-                </div>
-              ))
-          ) : (
-            <div className='bg-teal-600 px-3 rounded-3xl whitespace-nowrap'>
-              <Typography
-                variant='c'
-                weight='bold'
-                className='text-base-surface'
-              >
-                Genre-less
-              </Typography>
-            </div>
-          )}
+          <div className='bg-teal-600 px-3 rounded-3xl whitespace-nowrap'>
+            <Typography variant='c' weight='bold' className='text-base-surface'>
+              {ticket_price}
+            </Typography>
+          </div>
         </div>
       </div>
     </div>
