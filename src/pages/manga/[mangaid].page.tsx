@@ -9,8 +9,6 @@ import Typography from '@/components/typography/Typography';
 import Layout from '@/layouts/Layout';
 import Comment from '@/pages/manga/container/Comment';
 import Information from '@/pages/manga/container/Information';
-import Score from '@/pages/manga/container/Score';
-import Volume from '@/pages/manga/container/Volume';
 import { ApiReturn } from '@/types/api';
 import { Seri } from '@/types/entity/manga';
 
@@ -21,14 +19,14 @@ function DetailManga() {
 
   const { mangaid } = useRouter().query;
 
-  const url = `/seri/${mangaid}`;
-  const { data: mangaData, refetch } = useQuery<ApiReturn<Seri>>([url], {
-    onSuccess: (res) => setSrc(res.data.foto),
+  const url = `/movie/${mangaid}`;
+  const { data: mangaData } = useQuery<ApiReturn<Seri>>([url], {
+    onSuccess: (res) => setSrc(res.data.poster_url),
   });
 
   return (
     <Layout withNavbar={true}>
-      {mangaData?.data.judul && <SEO title={mangaData.data.judul} />}
+      {mangaData?.data.title && <SEO title={mangaData.data.title} />}
       <main className='min-h-screen'>
         <div className='relative h-[300px] w-full -z-50'>
           <Image
@@ -60,32 +58,25 @@ function DetailManga() {
               weight='bold'
               className='text-teal-600'
             >
-              {mangaData?.data.judul}
+              {mangaData?.data.title}
             </Typography>
             <Typography variant='p' className='text-teal-600'>
-              {mangaData?.data.sinopsis}
+              {mangaData?.data.description}
             </Typography>
           </div>
         </section>
 
         {mangaData && (
           <section className='flex flex-row gap-8 px-12 py-8 bg-base-light'>
-            <Information
-              score={mangaData.data.skor}
-              reviewers={mangaData.data.total_penilai}
-              readers={mangaData.data.total_pembaca}
-              date={new Date(mangaData.data.tahun_terbit)}
-              volumes={mangaData.data.manga.length}
-              authors={mangaData.data.penulis}
-              publisher={mangaData.data.nama_penerbit}
-              genres={mangaData.data.genre}
-            />
+            <div className='w-1/4'>
+              <Information
+                age_rating={mangaData.data.age_rating}
+                ticket_price={mangaData.data.ticket_price}
+                release_date={mangaData.data.release_date}
+              />
+            </div>
 
             <div className='flex flex-col gap-8 w-full'>
-              <Volume manga={mangaData.data.manga} refetch={refetch} />
-
-              <Score seriId={mangaData.data.id} />
-
               {mangaid && <Comment mangaId={+mangaid} />}
             </div>
           </section>

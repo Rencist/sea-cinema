@@ -67,7 +67,7 @@ export default function Comment({ mangaId }: { mangaId: number }) {
               <BsFillPersonFill className='text-xl text-base-icon' />
             </div>
             <Typography variant='c' weight='semibold' className='text-teal-600'>
-              {user ? user.nama : 'Guest'}
+              {user ? user.name : 'Guest'}
             </Typography>
           </div>
           <TextArea

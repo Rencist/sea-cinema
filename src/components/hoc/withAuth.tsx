@@ -61,17 +61,9 @@ export default function withAuth<T>(
 
       if (routePermission.includes('all')) return;
 
-      if (user && isAuthenticated) {
-        if (!routePermission.includes(user.peran)) {
-          router.replace('/');
-          window.sessionStorage.setItem('redirectIsDone', 'true');
-          return;
-        }
-      } else {
-        if (!isLoading) {
-          router.replace('/');
-          window.sessionStorage.setItem('redirectIsDone', 'true');
-        }
+      if (!isLoading) {
+        router.replace('/');
+        window.sessionStorage.setItem('redirectIsDone', 'true');
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routePermission, user, isAuthenticated, isLoading]);

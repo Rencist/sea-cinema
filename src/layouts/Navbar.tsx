@@ -86,7 +86,7 @@ export default function Navbar() {
                     weight='semibold'
                     className='text-teal-600'
                   >
-                    {user.nama.split(' ')[0]}
+                    {user.name.split(' ')[0]}
                   </Typography>
                 </div>
                 <Button

@@ -1,10 +1,8 @@
 export type SignUp = {
-  nama: string;
+  name: string;
   email: string;
-  no_telp: string;
-  alamat: string;
-  provinsi_id?: number;
-  kabupaten_id: number;
+  username: string;
+  age: number;
   password: string;
 };
 
