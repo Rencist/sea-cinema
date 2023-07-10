@@ -1,7 +1,6 @@
 import { Popover } from '@headlessui/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { BiShoppingBag } from 'react-icons/bi';
 import { BsFillPersonFill } from 'react-icons/bs';
 
 import Button from '@/components/buttons/Button';
@@ -66,12 +65,20 @@ export default function Navbar() {
         {user && isAuthenticated ? (
           <div className='flex flex-row gap-8 items-center'>
             <ButtonLink
-              href='/cart'
-              icon={BiShoppingBag}
+              href='/balance'
               variant='unstyled'
               size='large'
               iconClassName='text-4xl text-base-surface hover:text-teal-200'
-            />
+            >
+              <Typography
+                font='montserrat'
+                variant='h6'
+                weight='bold'
+                className='text-base-surface hover:text-teal-200'
+              >
+                Balance
+              </Typography>
+            </ButtonLink>
             <Popover className='relative'>
               <Popover.Button className='flex justify-center items-center w-11 h-11 bg-base-light rounded-full outline-none'>
                 <BsFillPersonFill className='text-base-icon text-3xl' />

@@ -16,6 +16,5 @@ export type Cart = {
 };
 
 export type CartPayment = {
-  bukti_pembayaran: string;
-  atas_nama: string;
+  balance: string;
 };

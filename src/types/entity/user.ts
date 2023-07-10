@@ -6,4 +6,5 @@ export type User = {
   age: number;
   password: string;
   token: string;
+  balance: number;
 };
