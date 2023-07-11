@@ -5,13 +5,17 @@ import SEO from '@/components/SEO';
 import Typography from '@/components/typography/Typography';
 import Layout from '@/layouts/Layout';
 import LibraryCard from '@/pages/library/components/LibraryCard';
+import useAuthStore from '@/store/useAuthStore';
 import { ApiReturn } from '@/types/api';
 import { Rent } from '@/types/entity/manga';
 
-export default withAuth(LibraryPage, ['user']);
+export default withAuth(LibraryPage, ['all']);
 
 function LibraryPage() {
-  const { data: queryData } = useQuery<ApiReturn<Rent[]>>(['peminjaman']);
+  const { data: queryData } = useQuery<ApiReturn<Rent[]>>([
+    '/movie/transaction',
+  ]);
+  const user = useAuthStore.useUser();
 
   return (
     <Layout withNavbar={true}>
@@ -23,17 +27,13 @@ function LibraryPage() {
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
                 {queryData?.data.map((rent) => (
                   <LibraryCard
-                    key={rent.id_peminjaman_manga}
-                    id={rent.id_peminjaman}
-                    mangaId={rent.id_seri}
-                    name={rent.judul}
-                    author={rent.penulis[0]}
-                    imageSrc={rent.foto}
-                    volume={rent.volume}
-                    rentDate={new Date(rent.tanggal_peminjaman)}
-                    dueDate={new Date(rent.batas_pengembalian)}
-                    fine={rent.denda}
-                    status={rent.status_peminjaman}
+                    key={rent.id}
+                    id={rent.id}
+                    movieID={rent.movie_id}
+                    userName={user?.name ? user.name : 'Anonymous'}
+                    movieName={rent.movie_name}
+                    totalPrice={rent.total_price}
+                    seat={rent.seat}
                   />
                 ))}
               </div>
@@ -44,7 +44,7 @@ function LibraryPage() {
                   weight='semibold'
                   className='text-teal-600'
                 >
-                  No Manga Being Rented
+                  No Seat Purchased
                 </Typography>
               </div>
             )}

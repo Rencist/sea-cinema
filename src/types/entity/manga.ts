@@ -33,25 +33,10 @@ export type Comment = {
 };
 
 export type Rent = {
-  id_peminjaman_manga: string;
-  id_seri: number;
-  id_penulis: number;
-  id_manga: number;
-  id_denda: string;
-  id_peminjaman: string;
-  foto: string;
-  judul: string;
-  penulis: Penulis[];
-  volume: number;
-  tanggal_peminjaman: string;
-  batas_pengembalian: string;
-  status_peminjaman:
-    | 'Menunggu Konfirmasi'
-    | 'Belum Diambil'
-    | 'Sedang Dipinjam'
-    | 'Sudah Dikembalikan'
-    | 'Sudah Membayar Denda';
-  denda: number;
-  is_denda_lunas: boolean;
-  jumlah_sewa: number;
+  id: string;
+  movie_id: number;
+  user_name: string;
+  movie_name: string;
+  total_price: number;
+  seat: Comment[];
 };

@@ -9,12 +9,14 @@ import Typography from '@/components/typography/Typography';
 import Layout from '@/layouts/Layout';
 import Comment from '@/pages/manga/container/Comment';
 import Information from '@/pages/manga/container/Information';
+import useAuthStore from '@/store/useAuthStore';
 import { ApiReturn } from '@/types/api';
 import { Seri } from '@/types/entity/manga';
 
 export default withAuth(DetailManga, ['all']);
 
 function DetailManga() {
+  const user = useAuthStore.useUser();
   const [src, setSrc] = useState('');
 
   const { mangaid } = useRouter().query;
@@ -67,23 +69,34 @@ function DetailManga() {
         </section>
 
         {mangaData && (
-          <section className='flex flex-row gap-8 px-12 py-8 bg-base-light'>
-            <div className='w-1/4'>
+          <section className='flex md:flex-row flex-col gap-8 px-12 py-8 bg-base-light'>
+            <div className='md:w-1/4 w-full'>
               <Information
                 age_rating={mangaData.data.age_rating}
                 ticket_price={mangaData.data.ticket_price}
                 release_date={mangaData.data.release_date}
               />
             </div>
-
-            <div className='flex flex-col gap-8 w-full'>
-              {mangaid && (
-                <Comment
-                  mangaId={+mangaid}
-                  mangaPrice={mangaData.data.ticket_price}
-                />
-              )}
-            </div>
+            {user ? (
+              <div className='flex flex-col gap-8 w-full'>
+                {mangaid && (
+                  <Comment
+                    mangaId={+mangaid}
+                    mangaPrice={mangaData.data.ticket_price}
+                  />
+                )}
+              </div>
+            ) : (
+              <div className='flex w-full py-16 justify-center'>
+                <Typography
+                  variant='h3'
+                  weight='semibold'
+                  className='text-teal-600'
+                >
+                  Login Untuk Memesan Seat
+                </Typography>
+              </div>
+            )}
           </section>
         )}
       </main>

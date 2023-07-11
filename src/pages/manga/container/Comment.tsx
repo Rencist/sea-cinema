@@ -70,7 +70,7 @@ export default function Comment({
       }
     );
     addComment(formData, {
-      onSuccess: () => router.reload(),
+      onSuccess: () => router.push('/library').then(() => router.reload()),
       onError: (err) => {
         err.response && setError(err.response?.data.errors);
       },
