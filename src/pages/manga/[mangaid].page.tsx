@@ -77,7 +77,12 @@ function DetailManga() {
             </div>
 
             <div className='flex flex-col gap-8 w-full'>
-              {mangaid && <Comment mangaId={+mangaid} />}
+              {mangaid && (
+                <Comment
+                  mangaId={+mangaid}
+                  mangaPrice={mangaData.data.ticket_price}
+                />
+              )}
             </div>
           </section>
         )}

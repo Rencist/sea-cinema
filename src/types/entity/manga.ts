@@ -29,11 +29,7 @@ export type Seri = {
 };
 
 export type Comment = {
-  id: string;
-  isi: string;
-  username: string;
-  created_at: string;
-  user_id: string;
+  seat: string;
 };
 
 export type Rent = {

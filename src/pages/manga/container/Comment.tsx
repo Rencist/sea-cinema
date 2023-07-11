@@ -1,54 +1,80 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ApiError } from 'next/dist/server/api-utils';
 import { useRouter } from 'next/router';
-import { FormProvider, useForm } from 'react-hook-form';
-import { BsFillPersonFill } from 'react-icons/bs';
+import { serialize } from 'object-to-formdata';
+import React, { useState } from 'react';
+import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 import Button from '@/components/buttons/Button';
-import TextArea from '@/components/form/TextArea';
-import PageNavigation from '@/components/PageNavigation';
+import SelectInput from '@/components/form/SelectInput';
 import Typography from '@/components/typography/Typography';
-import usePageNavigation from '@/hooks/usePageNavigation';
 import api from '@/lib/api';
-import CommentCard from '@/pages/manga/components/CommentCard';
-import useAuthStore from '@/store/useAuthStore';
-import { ApiReturn, PaginatedApiResponse } from '@/types/api';
+import { ApiError, ApiReturn } from '@/types/api';
 import { Comment } from '@/types/entity/manga';
+import { TransactionFormProps } from '@/types/entity/transaction';
 
-export default function Comment({ mangaId }: { mangaId: number }) {
-  const user = useAuthStore.useUser();
+export default function Comment({
+  mangaId,
+  mangaPrice,
+}: {
+  mangaId: number;
+  mangaPrice: number;
+}) {
+  const { control } = useForm({});
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'seat',
+    shouldUnregister: false,
+  });
+  React.useMemo(() => {
+    if (fields.length === 0) {
+      append({
+        seat: '',
+      });
+    }
+  }, [append, fields.length]);
   const router = useRouter();
-  const methods = useForm<{ isi: string }>();
+  const methods = useForm<{ isi: TransactionFormProps }>();
   const { handleSubmit } = methods;
-  const { pageState, setPageState } = usePageNavigation({ pageSize: 5 });
 
   const { mutate: addComment } = useMutation<
-    AxiosResponse<ApiReturn<null>>,
+    AxiosResponse<ApiReturn<null>> | void,
     AxiosError<ApiError>,
-    { isi: string; seri_id: number }
-  >((data: { isi: string; seri_id: number }) => api.post('komentar', data));
+    FormData
+  >((data: FormData) =>
+    api.post('/movie/transaction', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+  );
 
-  const url = `/komentar/${mangaId}?page=${pageState.pageIndex + 1}&per_page=${
-    pageState.pageSize
-  }`;
+  const url = `/movie/available_seat/${mangaId}`;
 
-  const { data: commentData, refetch } = useQuery<
-    PaginatedApiResponse<Comment[]>
-  >([url], {
+  const { data: commentData } = useQuery<ApiReturn<Comment[]>>([url], {
     keepPreviousData: true,
   });
 
-  const onSubmit = (data: { isi: string }) => {
-    !user && router.push('/login');
-
-    addComment(
+  const [error, setError] = useState('');
+  const onSubmit = (data: { isi: TransactionFormProps }) => {
+    const formData = serialize(
       {
-        isi: data.isi,
-        seri_id: mangaId,
+        ...data,
+        total_price: fields.length * mangaPrice,
+        movie_id: mangaId,
+        total_seat: fields.length,
       },
-      { onSuccess: () => refetch() }
+      {
+        indices: true,
+      }
     );
+    addComment(formData, {
+      onSuccess: () => router.reload(),
+      onError: (err) => {
+        err.response && setError(err.response?.data.errors);
+      },
+    });
   };
 
   return (
@@ -62,46 +88,78 @@ export default function Comment({ mangaId }: { mangaId: number }) {
           className='flex flex-col w-full bg-base-surface gap-3 p-3 rounded-lg'
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className='flex flex-row items-center gap-1.5'>
-            <div className='w-8 h-8 flex justify-center items-center rounded-full bg-base-light'>
-              <BsFillPersonFill className='text-xl text-base-icon' />
+          {fields.map((field, index) => (
+            <div key={field.id}>
+              <div className='flex justify-between items-center'>
+                <Typography
+                  weight='semibold'
+                  className='flex justify-between items-center'
+                >
+                  {`Bangku ${index + 1} `}
+                  <Typography className='text-red-200'> *</Typography>
+                </Typography>
+                {index !== 0 && (
+                  <button
+                    type='button'
+                    onClick={() => {
+                      remove(index);
+                    }}
+                    className='text-danger-50'
+                  >
+                    Hapus Seat
+                  </button>
+                )}
+              </div>
+              <div className='mt-4'>
+                <SelectInput
+                  id={`seat[${index}].seat`}
+                  placeholder='Pilih Bangku'
+                  validation={{ required: 'Bangku harus diisi' }}
+                >
+                  {commentData?.data.map((data) => (
+                    <option key={data.seat} value={data.seat}>
+                      {data.seat}
+                    </option>
+                  ))}
+                </SelectInput>
+              </div>
+              {index === fields.length - 1 && (
+                <div className='flex gap-x-4 justify-end py-4'>
+                  <>
+                    {index < 5 ? (
+                      <Button
+                        type='button'
+                        onClick={() => {
+                          append({});
+                        }}
+                        variant='primary'
+                        className='w-full'
+                      >
+                        Tambah Bangku
+                      </Button>
+                    ) : null}
+                  </>
+                  <Button type='submit' className='self-end'>
+                    Kirim Komentar
+                  </Button>
+                </div>
+              )}
+              {error && (
+                <div className='flex space-x-1'>
+                  <HiOutlineExclamationCircle className='shrink-0 text-red-200' />
+                  <Typography
+                    variant='c'
+                    className='!leading-tight text-base-primary'
+                  >
+                    {error}
+                  </Typography>
+                </div>
+              )}
             </div>
-            <Typography variant='c' weight='semibold' className='text-teal-600'>
-              {user ? user.name : 'Guest'}
-            </Typography>
-          </div>
-          <TextArea
-            id='isi'
-            placeholder='Tulis komentar di sini...'
-            rows={5}
-            onClick={() => !user && router.push('/login')}
-          />
-          <Button type='submit' className='self-end'>
-            Kirim Komentar
-          </Button>
+          ))}
         </form>
       </FormProvider>
-
-      <div className='flex flex-col gap-6 items-end'>
-        {commentData?.data.data_per_page?.map(
-          ({ id, isi, username, created_at }) => (
-            <CommentCard
-              key={id}
-              content={isi}
-              author={username}
-              createdAt={created_at}
-            />
-          )
-        )}
-        {commentData && (
-          <PageNavigation
-            meta={commentData?.data.meta}
-            pageCount={5}
-            pageState={pageState}
-            setPageState={setPageState}
-          />
-        )}
-      </div>
+      <div className='flex flex-col gap-6 items-end'></div>
     </div>
   );
 }
