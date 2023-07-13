@@ -14,9 +14,9 @@ export default function SEO({ title, description, ...rest }: SEOProps) {
       openGraph={{
         type: 'website',
         url: process.env.NEXT_PUBLIC_URL,
-        title: 'Tamiyochi',
-        siteName: 'Tamiyochi',
-        description: 'Tamiyochi: The Largest Manga Library in Indonesia',
+        title: 'SEA - Cinema',
+        siteName: 'SEA - Cinema',
+        description: 'SEA - Cinema: The Largest Cinema in Indonesia',
         // images: [
         //   {
         //     url: `${process.env.NEXT_PUBLIC_URL}/images/og-itsexpo.png`,

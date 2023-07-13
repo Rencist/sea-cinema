@@ -12,7 +12,7 @@ import Typography from '@/components/typography/Typography';
 import { SORT } from '@/constant/manga';
 import usePageNavigation from '@/hooks/usePageNavigation';
 import Layout from '@/layouts/Layout';
-import MangaCard from '@/pages/dashboard/components/MangaCard';
+import MangaCard from '@/pages/dashboard/components/MovieCard';
 import { PaginatedApiResponse } from '@/types/api';
 import { Seri } from '@/types/entity/manga';
 
@@ -48,7 +48,7 @@ function DashboardPage() {
 
   return (
     <Layout withNavbar={true}>
-      <SEO title='Koleksi Manga' />
+      <SEO title='Movie Collection' />
       <main className='space-y-8 min-h-screen bg-base-surface pt-[92px]'>
         <div className='p-12 space-y-8'>
           <section className='w-full'>
@@ -93,7 +93,7 @@ function DashboardPage() {
                   weight='semibold'
                   className='text-teal-600'
                 >
-                  No Manga Found
+                  No Movie Found
                 </Typography>
               </div>
             )}

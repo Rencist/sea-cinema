@@ -6,17 +6,17 @@ const config: DefaultSeoProps = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://www.tamiyochi.com',
-    siteName: 'Tamiyochi',
+    url: 'https://www.sea-cinema.com',
+    siteName: 'SEA',
   },
   twitter: {
     handle: '@handle',
     site: '@site',
     cardType: 'summary_large_image',
   },
-  titleTemplate: '%s | Tamiyochi',
-  description: 'Tamiyochi: The Largest Manga Libary in Indonesia',
-  defaultTitle: 'Tamiyochi',
+  titleTemplate: '%s | SEA',
+  description: 'SEA: The Largest Cinema in Indonesia',
+  defaultTitle: 'SEA',
   additionalLinkTags: [
     {
       rel: 'icon',

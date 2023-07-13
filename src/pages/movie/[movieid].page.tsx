@@ -7,8 +7,8 @@ import withAuth from '@/components/hoc/withAuth';
 import SEO from '@/components/SEO';
 import Typography from '@/components/typography/Typography';
 import Layout from '@/layouts/Layout';
-import Comment from '@/pages/manga/container/Comment';
-import Information from '@/pages/manga/container/Information';
+import Information from '@/pages/movie/container/Information';
+import Seat from '@/pages/movie/container/Seat';
 import useAuthStore from '@/store/useAuthStore';
 import { ApiReturn } from '@/types/api';
 import { Seri } from '@/types/entity/manga';
@@ -18,10 +18,9 @@ export default withAuth(DetailManga, ['all']);
 function DetailManga() {
   const user = useAuthStore.useUser();
   const [src, setSrc] = useState('');
+  const { movieid } = useRouter().query;
 
-  const { mangaid } = useRouter().query;
-
-  const url = `/movie/${mangaid}`;
+  const url = `/movie/${movieid}`;
   const { data: mangaData } = useQuery<ApiReturn<Seri>>([url], {
     onSuccess: (res) => setSrc(res.data.poster_url),
   });
@@ -79,9 +78,9 @@ function DetailManga() {
             </div>
             {user ? (
               <div className='flex flex-col gap-8 w-full'>
-                {mangaid && (
-                  <Comment
-                    mangaId={+mangaid}
+                {movieid && (
+                  <Seat
+                    mangaId={+movieid}
                     mangaPrice={mangaData.data.ticket_price}
                   />
                 )}

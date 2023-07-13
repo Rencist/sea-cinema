@@ -1,23 +1,3 @@
-export type Manga = {
-  id: number;
-  volume: number;
-  jumlah_tersedia: number;
-  harga_sewa: number;
-  seri_id: number;
-};
-
-export type Penulis = {
-  id: number;
-  nama_depan: string;
-  nama_belakang: string;
-  peran: string;
-};
-
-export type Genre = {
-  id: number;
-  nama: string;
-};
-
 export type Seri = {
   id: number;
   title: string;

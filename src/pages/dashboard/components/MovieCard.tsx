@@ -34,7 +34,7 @@ export default function MangaCard({
   const { events } = useDraggable(ref);
 
   const handleClick = () => {
-    const url = `/manga/${id}`;
+    const url = `/movie/${id}`;
     router.push(url);
   };
 
@@ -46,7 +46,7 @@ export default function MangaCard({
       >
         <Image
           src={src}
-          alt='manga-cover'
+          alt='movie-cover'
           width='200'
           height='300'
           onError={() => setSrc('/images/error.jpg')}

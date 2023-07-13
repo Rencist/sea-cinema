@@ -32,7 +32,7 @@ export default function Navbar() {
             weight='bold'
             className='hidden md:block text-base-surface'
           >
-            Tamiyochi
+            SEA - Cinema
           </Typography>
         </UnstyledLink>
 
@@ -44,7 +44,7 @@ export default function Navbar() {
               weight='bold'
               className='text-base-surface hover:text-teal-200'
             >
-              Koleksi Manga
+              Movie Collection
             </Typography>
           </UnstyledLink>
 
@@ -56,7 +56,7 @@ export default function Navbar() {
                 weight='bold'
                 className='text-base-surface hover:text-teal-200'
               >
-                Manga Terpinjam
+                Detail Transaction
               </Typography>
             </UnstyledLink>
           )}

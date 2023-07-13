@@ -14,7 +14,7 @@ import { ApiError, ApiReturn } from '@/types/api';
 import { Comment } from '@/types/entity/manga';
 import { TransactionFormProps } from '@/types/entity/transaction';
 
-export default function Comment({
+export default function Seat({
   mangaId,
   mangaPrice,
 }: {
@@ -80,7 +80,7 @@ export default function Comment({
   return (
     <div className='flex flex-col gap-6 w-full'>
       <Typography weight='semibold' className='text-teal-600'>
-        Komentar Pembaca
+        Available Seat
       </Typography>
 
       <FormProvider {...methods}>
@@ -140,7 +140,7 @@ export default function Comment({
                     ) : null}
                   </>
                   <Button type='submit' className='self-end'>
-                    Kirim Komentar
+                    Beli
                   </Button>
                 </div>
               )}
